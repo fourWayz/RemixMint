@@ -2,6 +2,8 @@ import { ZoraNFTCreatorV1Factory } from '@zoralabs/protocol-sdk';
 import { parseEther } from 'ethers';
 import { createPublicClient, createWalletClient, custom, http } from 'viem';
 import { zora } from 'viem/chains';
+import { useAccount, useWriteContract } from 'wagmi';
+import { createCoinCall } from '@zoralabs/coins-sdk';
 
 export async function mintRemixNFT({
   imageUrl,
@@ -12,6 +14,8 @@ export async function mintRemixNFT({
   walletClient: any;
   address: string;
 }) {
+  
+  const { writeContract } = useWriteContract();
   const zoraFactory = new ZoraNFTCreatorV1Factory({
     chain: zora,
     walletClient,

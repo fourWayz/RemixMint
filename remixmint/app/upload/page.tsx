@@ -1,3 +1,5 @@
+"use client"
+
 import { useState } from 'react';
 import UploadForm from '../components/UploadForm';
 import RemixPreview from '../components/RemixPreview';

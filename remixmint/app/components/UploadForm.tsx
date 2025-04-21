@@ -1,3 +1,5 @@
+"use client"
+
 import { useState } from 'react';
 
 export default function UploadForm({
@@ -25,9 +27,10 @@ export default function UploadForm({
       });
 
       const data = await res.json();
+      console.log(data)
       if (!data.base64) throw new Error('Remix failed');
 
-      onRemixComplete(data.base64, file);
+      // onRemixComplete(data.base64, file);
     } catch (err) {
       console.error(err);
       setError('Something went wrong while remixing your image.');
