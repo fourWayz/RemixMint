@@ -23,14 +23,15 @@ export default function UploadForm({
 
       const res = await fetch('/api/remix', {
         method: 'POST',
-        body: formData,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: 'a futuristic city skyline at night' }),
       });
+      
 
-      const data = await res.json();
-      console.log(data)
-      if (!data.base64) throw new Error('Remix failed');
+      const { image } = await res.json();
+      // if (!data.base64) throw new Error('Remix failed');
 
-      // onRemixComplete(data.base64, file);
+      onRemixComplete(image, file);
     } catch (err) {
       console.error(err);
       setError('Something went wrong while remixing your image.');

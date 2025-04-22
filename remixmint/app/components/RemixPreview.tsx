@@ -7,7 +7,7 @@ import { useState } from 'react';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { Address } from 'viem';
-
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 const SweetAlert = withReactContent(Swal);
 
 export default function RemixPreview({ base64, file }: { base64: string; file: File | null }) {
@@ -16,18 +16,23 @@ export default function RemixPreview({ base64, file }: { base64: string; file: F
   const [error, setError] = useState('');
   const [ipfsUrl, setIpfsUrl] = useState('');
   const [copied, setCopied] = useState(false);
+  const { address, isConnected } = useAccount();
+  const { openConnectModal } = useConnectModal();
 
   const { data: walletClient } = useWalletClient();
-  const { address } = useAccount();
   const { writeContract } = useWriteContract();
 
   const handleMint = async () => {
+    if (!isConnected) {
+      openConnectModal?.();
+      return;
+    }
     if (!walletClient || !address || !file) {
       setError('Missing wallet connection or file.');
       return;
     }
 
-   
+
     const { value: formValues } = await SweetAlert.fire({
       title: 'Customize Your Meme Coin',
       html:
@@ -62,8 +67,6 @@ export default function RemixPreview({ base64, file }: { base64: string; file: F
         name,
         description: 'AI-generated meme using RemixMint',
         image: ipfsImageUrl,
-        createdBy: address,
-        remixPrompt: 'turn this into a viral meme',
       });
 
       const coinParams = {
@@ -101,9 +104,9 @@ export default function RemixPreview({ base64, file }: { base64: string; file: F
     <div className="mt-6">
       <h2 className="text-lg font-bold mb-2">Remixed Image</h2>
       <img
-        src={`data:image/png;base64,${base64}`}
-        alt="Remixed"
-        className="rounded-lg shadow"
+        src={`${base64}`}
+        alt="Generated"
+        className="rounded-lg shadow max-w-full max-h-[500px] object-contain"
       />
 
       <button

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 export default function Home() {
   return (
@@ -11,6 +12,11 @@ export default function Home() {
         <p className="text-gray-600 text-lg mb-6">
           Turn any image into a viral, tradable meme NFT — powered by AI & Zora.
         </p>
+
+         {/* 💼 Wallet Connect */}
+         <div className="mb-6">
+         <ConnectButton />
+        </div>
         <div className="flex justify-center gap-4">
           <Link href="/upload">
             <button className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition">
