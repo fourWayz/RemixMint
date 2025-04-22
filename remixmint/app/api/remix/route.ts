@@ -13,10 +13,17 @@ export async function POST(req: Request) {
       });
     }
 
+    // Set a timeout for the request
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 60000); // 60 seconds timeout
+
     const art = await hf.textToImage({
       model: 'stabilityai/stable-diffusion-xl-base-1.0',
       inputs: `${prompt}, crypto coin artwork, vibrant, trending`,
+      signal: controller.signal,
     });
+
+    clearTimeout(timeoutId); // Clear the timeout once the request is done
 
     const buffer = Buffer.from(await art.arrayBuffer());
     const base64 = buffer.toString('base64');
