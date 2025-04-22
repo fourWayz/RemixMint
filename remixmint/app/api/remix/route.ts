@@ -1,6 +1,6 @@
 import { HfInference } from '@huggingface/inference';
 
-const hf = new HfInference(process.env.NEXT_PUBLIC_HUGGINGFACE_API_TOKEN);
+const hf = new HfInference(process.env.HUGGINGFACE_API_TOKEN);
 
 export async function POST(req: Request) {
   try {
