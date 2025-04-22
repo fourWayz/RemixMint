@@ -18,6 +18,7 @@ export default function RemixPreview({ base64, file }: { base64: string; file: F
   const [copied, setCopied] = useState(false);
   const { address, isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
+  const [txHash, setTxHash] = useState('');
 
   const { data: walletClient } = useWalletClient();
   const { writeContract } = useWriteContract();
@@ -80,11 +81,22 @@ export default function RemixPreview({ base64, file }: { base64: string; file: F
       const callParams = await createCoinCall(coinParams);
 
       writeContract(callParams, {
-        onSuccess: () => {
+        onSuccess: async (result) => {
           setMinted(true);
           setIpfsUrl(metadataURI);
-          SweetAlert.fire('🎉 Coin Minted!', 'Your meme coin is live!', 'success');
+
+          const txHash = result;
+          setTxHash(txHash);
+          SweetAlert.fire({
+            title: '🎉 Coin Minted!',
+            html: `
+              <p>Your meme coin is live!</p>
+              <p><strong>Tx Hash:</strong> <a href="https://basescan.org/tx/${txHash}" target="_blank">${txHash}</a></p>
+            `,
+            icon: 'success',
+          });
         },
+
         onError: (err) => {
           console.error(err);
           setError('Failed to deploy coin.');
@@ -135,6 +147,22 @@ export default function RemixPreview({ base64, file }: { base64: string; file: F
               {copied ? 'Copied!' : 'Copy'}
             </button>
           </div>
+        </div>
+      )}
+
+      {txHash && (
+        <div className="mt-3 text-sm text-gray-700">
+          <p>
+            Tx Hash:{' '}
+            <a
+              href={`https://basescan.org/tx/${txHash}`}
+              target="_blank"
+              className="text-blue-600 underline"
+            >
+              {txHash}
+            </a>
+          </p>
+
         </div>
       )}
 

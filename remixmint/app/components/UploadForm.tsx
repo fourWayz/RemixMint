@@ -9,10 +9,11 @@ export default function UploadForm({
 }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [prompt, setPrompt] = useState('');
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
+    if (!file || !prompt) return;
 
     setLoading(true);
     setError('');
@@ -24,7 +25,7 @@ export default function UploadForm({
       const res = await fetch('/api/remix', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt: 'a futuristic city skyline at night' }),
+        body: JSON.stringify({ prompt }),
       });
       
 
@@ -42,6 +43,16 @@ export default function UploadForm({
 
   return (
     <div className="bg-white p-6 rounded-xl shadow">
+       <label className="block mb-2 text-gray-700 font-semibold">
+        Enter a prompt to generate your meme:
+      </label>
+      <input
+        type="text"
+        value={prompt}
+        onChange={(e) => setPrompt(e.target.value)}
+        className="w-full px-4 py-2 mb-4 border rounded-xl"
+        placeholder="e.g. Sassy cat wearing sunglasses in space"
+      />
       <p className="mb-4 text-gray-600 text-sm">
         Upload an image to turn it into a viral AI-powered meme.
       </p>
