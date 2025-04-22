@@ -1,7 +1,7 @@
 'use client';
 
 import { useWalletClient, useAccount } from 'wagmi';
-import { useWriteContract } from 'wagmi/';
+import { useWriteContract } from 'wagmi';
 import { createCoinCall } from '@zoralabs/coins-sdk';
 import { useState } from 'react';
 import Swal from 'sweetalert2';
