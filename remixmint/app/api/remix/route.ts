@@ -1,7 +1,7 @@
-import { HfInference } from '@huggingface/inference';
+import { InferenceClient } from '@huggingface/inference';
 import { NextRequest, NextResponse } from 'next/server';
 
-const hf = new HfInference(process.env.HUGGINGFACE_API_TOKEN);
+const hf = new InferenceClient(process.env.HUGGINGFACE_API_TOKEN);
 
 export async function POST(req: NextRequest) {
   try {
@@ -14,8 +14,9 @@ export async function POST(req: NextRequest) {
 
     // Call Hugging Face API to generate image
     const art = await hf.textToImage({
-      model: 'stabilityai/stable-diffusion-xl-base-1.0',
-      inputs: `${prompt}`,
+      provider: "nebius",
+      model: 'black-forest-labs/FLUX.1-dev',
+      inputs: `A nice image of ${prompt}`,
     });
 
     console.log(art,'art')
