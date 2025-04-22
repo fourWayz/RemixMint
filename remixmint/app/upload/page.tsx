@@ -1,8 +1,8 @@
 "use client"
 
 import { useState } from 'react';
-import UploadForm from '../components/UploadForm';
-import RemixPreview from '../components/RemixPreview';
+import UploadForm from '@/app/components/UploadForm';
+import RemixPreview from '@/app/components/RemixPreview';
 
 
 export default function UploadPage() {
