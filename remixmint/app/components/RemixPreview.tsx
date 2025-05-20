@@ -10,6 +10,16 @@ import { Address } from 'viem';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 const SweetAlert = withReactContent(Swal);
 
+interface MintedCoin {
+  name: string;
+  symbol: string;
+  image: string;
+  txHash: string;
+  contractAddress?: string;
+  timestamp: number;
+  ipfsUrl: string;
+}
+
 export default function RemixPreview({ base64, file }: { base64: string; file: File | null }) {
   const [minted, setMinted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -22,6 +32,12 @@ export default function RemixPreview({ base64, file }: { base64: string; file: F
 
   const { data: walletClient } = useWalletClient();
   const { writeContract } = useWriteContract();
+
+  const saveMintToHistory = (coin: MintedCoin) => {
+    const history = JSON.parse(localStorage.getItem('mintHistory') || '[]');
+    history.unshift(coin); // Add newest first
+    localStorage.setItem('mintHistory', JSON.stringify(history));
+  };
 
   const handleMint = async () => {
     if (!isConnected) {
@@ -62,7 +78,7 @@ export default function RemixPreview({ base64, file }: { base64: string; file: F
       const { uploadToIPFS } = await import('@/lib/uploadToIPFS');
       const { uploadMetadataToIPFS } = await import('@/lib/uploadMetadataToIPFS');
 
-      const ipfsImageUrl = await uploadToIPFS(file);
+      const ipfsImageUrl = await uploadToIPFS(base64);
 
       const metadataURI = await uploadMetadataToIPFS({
         name,
@@ -87,6 +103,15 @@ export default function RemixPreview({ base64, file }: { base64: string; file: F
 
           const txHash = result;
           setTxHash(txHash);
+          // Store in history immediately 
+          saveMintToHistory({
+            name,
+            symbol,
+            image: base64, // or ipfsImageUrl if preferred
+            txHash,
+            ipfsUrl: metadataURI,
+            timestamp: Date.now(),
+          });
           SweetAlert.fire({
             title: '🎉 Coin Minted!',
             html: `

@@ -31,8 +31,8 @@ export default function UploadForm({
 
       const { image } = await res.json();
       // if (!data.base64) throw new Error('Remix failed');
-
-      onRemixComplete(image, file);
+      console.log(image,'image')
+      // onRemixComplete(image, file);
     } catch (err) {
       console.error(err);
       setError('Something went wrong while remixing your image.');
