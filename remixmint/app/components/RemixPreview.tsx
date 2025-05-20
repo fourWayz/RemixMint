@@ -39,6 +39,23 @@ export default function RemixPreview({ base64, file }: { base64: string; file: F
     localStorage.setItem('mintHistory', JSON.stringify(history));
   };
 
+  const fetchContractAddress = async (txHash: string) => {
+  try {
+    const response = await fetch(`https://api.basescan.org/api?module=transaction&action=gettxreceiptstatus&txhash=${txHash}`);
+    const data = await response.json();
+    if (data.result?.contractAddress) {
+      // Update localStorage with contract address
+      const history = JSON.parse(localStorage.getItem('mintHistory') || '[]');
+      const updatedHistory = history.map((item: MintedCoin) => 
+        item.txHash === txHash ? { ...item, contractAddress: data.result.contractAddress } : item
+      );
+      localStorage.setItem('mintHistory', JSON.stringify(updatedHistory));
+    }
+  } catch (error) {
+    console.error('Failed to fetch contract address:', error);
+  }
+};
+
   const handleMint = async () => {
     if (!isConnected) {
       openConnectModal?.();
@@ -107,7 +124,7 @@ export default function RemixPreview({ base64, file }: { base64: string; file: F
           saveMintToHistory({
             name,
             symbol,
-            image: base64, // or ipfsImageUrl if preferred
+            image: base64, 
             txHash,
             ipfsUrl: metadataURI,
             timestamp: Date.now(),
@@ -120,6 +137,8 @@ export default function RemixPreview({ base64, file }: { base64: string; file: F
             `,
             icon: 'success',
           });
+
+            setTimeout(() => fetchContractAddress(txHash), 10000);
         },
 
         onError: (err) => {
