@@ -5,22 +5,18 @@ import { useState } from 'react';
 export default function UploadForm({
   onRemixComplete,
 }: {
-  onRemixComplete: (base64: string, file: File) => void;
+  onRemixComplete: (base64: string) => void;
 }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [prompt, setPrompt] = useState('');
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file || !prompt) return;
+  const handleFileUpload = async () => {
 
     setLoading(true);
     setError('');
 
     try {
-      const formData = new FormData();
-      formData.append('file', file);
 
       const res = await fetch('/api/remix', {
         method: 'POST',
@@ -31,8 +27,7 @@ export default function UploadForm({
 
       const { image } = await res.json();
       // if (!data.base64) throw new Error('Remix failed');
-      console.log(image,'image')
-      onRemixComplete(image, file);
+      onRemixComplete(image);
     } catch (err) {
       console.error(err);
       setError('Something went wrong while remixing your image.');
@@ -53,10 +48,14 @@ export default function UploadForm({
         className="w-full px-4 py-2 mb-4 border rounded-xl"
         placeholder="e.g. Sassy cat wearing sunglasses in space"
       />
-      <p className="mb-4 text-gray-600 text-sm">
-        Upload an image to turn it into a viral AI-powered meme.
-      </p>
-      <input type="file" accept="image/*" onChange={handleFileUpload} />
+      
+      <button 
+      onClick={handleFileUpload}
+      className={`
+        px-6 py-3 rounded-lg font-medium text-white
+        ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}
+        transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500
+      `}>Remix</button>
       {loading && <p className="mt-3 text-sm text-blue-600">Remixing...</p>}
       {error && <p className="mt-3 text-sm text-red-500">{error}</p>}
     </div>

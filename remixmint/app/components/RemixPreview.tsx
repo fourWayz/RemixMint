@@ -20,7 +20,7 @@ interface MintedCoin {
   ipfsUrl: string;
 }
 
-export default function RemixPreview({ base64, file }: { base64: string; file: File | null }) {
+export default function RemixPreview({ base64 }: { base64: string; }) {
   const [minted, setMinted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -61,7 +61,7 @@ export default function RemixPreview({ base64, file }: { base64: string; file: F
       openConnectModal?.();
       return;
     }
-    if (!walletClient || !address || !file) {
+    if (!walletClient || !address || !base64) {
       setError('Missing wallet connection or file.');
       return;
     }

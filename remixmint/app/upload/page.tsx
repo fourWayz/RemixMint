@@ -3,11 +3,11 @@
 import { useState } from 'react';
 import UploadForm from '@/app/components/UploadForm';
 import RemixPreview from '@/app/components/RemixPreview';
+import { MintHistory } from '../components/MintHistory';
 
 
 export default function UploadPage() {
   const [remixBase64, setRemixBase64] = useState('');
-  const [originalFile, setOriginalFile] = useState<File | null>(null);
 
   return (
     <div className="p-6 max-w-3xl mx-auto">
@@ -15,14 +15,15 @@ export default function UploadPage() {
 
       {!remixBase64 ? (
         <UploadForm
-          onRemixComplete={(base64, file) => {
+          onRemixComplete={(base64) => {
             setRemixBase64(base64);
-            setOriginalFile(file);
           }}
         />
       ) : (
-        <RemixPreview base64={remixBase64} file={originalFile} />
+           <RemixPreview base64={remixBase64}  />
       )}
+          <MintHistory />
+
     </div>
   );
 }
