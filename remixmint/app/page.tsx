@@ -58,9 +58,9 @@ export default function Home() {
 
       {/* 🖼️ Gallery Preview */}
       <section className="mb-12">
-        <h2 className="text-2xl font-bold mb-4">🔥 Latest Remixes</h2>
+        <h2 className="text-2xl font-bold mb-4">🔥 Latest Minting</h2>
         <p className="text-gray-600 mb-4">See what others are minting!</p>
-        <Link href="/gallery">
+        <Link href="/recent-mints">
           <button className="text-blue-600 underline">Explore Gallery →</button>
         </Link>
       </section>

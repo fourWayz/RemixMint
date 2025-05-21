@@ -1,4 +1,4 @@
-import { MintGrid } from '@/components/mint-grid';
+import { MintGrid } from "../components/MintGrid";
 
 export default function RecentMintsPage() {
   return (
