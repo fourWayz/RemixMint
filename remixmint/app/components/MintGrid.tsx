@@ -34,18 +34,18 @@ export function MintGrid({ fetchType }: { fetchType: FetchType }) {
   const fetchMints = async () => {
     setLoading(true);
     try {
-        console.log('hey')
-      const endpoint = fetchType === 'recent' 
+      console.log('hey')
+      const endpoint = fetchType === 'recent'
         ? `/api/mints/recent?cursor=${cursor || ''}`
         : '/api/mints/history';
-      
+
       const res = await fetch(endpoint);
       const data = await res.json();
 
-      console.log(endpoint,'hey')
-      
+      console.log(data, 'hey')
+
       if (data.error) throw new Error(data.error);
-      
+
       setMints(prev => [...prev, ...data.coins]);
       setCursor(data.cursor);
       setHasMore(data.hasMore);
@@ -83,11 +83,15 @@ export function MintGrid({ fetchType }: { fetchType: FetchType }) {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {mints.map((item) => (
-          <CoinCard key={item.id} coin={item} darkMode={darkMode} />
+        {mints?.map((item, index) => (
+          <CoinCard
+            key={`${item.txHash}-${index}`}
+            coin={item}
+            darkMode={darkMode}
+          />
         ))}
       </div>
-
+  
       {loading && (
         <div className="flex justify-center py-8">
           <FaSpinner className="animate-spin text-2xl text-blue-500" />
@@ -114,16 +118,16 @@ const CoinCard = ({ coin, darkMode }: { coin: MintedCoin; darkMode: boolean }) =
   return (
     <div className={`rounded-xl overflow-hidden transition-all duration-200 border ${t.card} hover:shadow-md`}>
       <div className="relative h-48 bg-gray-100 dark:bg-gray-700">
-        <img 
-          src='/remix-mint.png' 
-          alt={coin.name} 
+        <img
+          src='/remix-mint.png'
+          alt={coin.name}
           className="absolute inset-0 w-full h-full object-contain p-4"
           onError={(e) => {
             (e.target as HTMLImageElement).src = '/default-coin.png';
           }}
         />
       </div>
-      
+
       <div className="p-4">
         <div className="flex justify-between items-start">
           <div>
@@ -136,29 +140,29 @@ const CoinCard = ({ coin, darkMode }: { coin: MintedCoin; darkMode: boolean }) =
             {coin.marketCap ? `$${coin.marketCap.toLocaleString()}` : 'No cap'}
           </div>
         </div>
-        
+
         <div className={`mt-3 text-sm ${t.secondaryText} truncate`}>
-          By: {coin.minterAddress.slice(0, 6)}...{coin.minterAddress.slice(-4)}
+          By: {coin.minterAddress?.slice(0, 6)}...{coin.minterAddress?.slice(-4)}
         </div>
-        
+
         <div className={`mt-4 pt-4 border-t ${t.divider} flex justify-between items-center`}>
-          <span className={`text-sm ${t.secondaryText}`}>
+          {/* <span className={`text-sm ${t.secondaryText}`}>
             {new Date(coin.timestamp).toLocaleDateString()}
-          </span>
-          
+          </span> */}
+
           <div className="flex gap-2">
-            <a 
-              href={`https://basescan.org/tx/${coin.txHash}`} 
+            <a
+              href={`https://basescan.org/tx/${coin.txHash}`}
               target="_blank"
               className={`p-1 ${t.secondaryText} hover:text-blue-500`}
               title="View Transaction"
             >
               <FaExternalLinkAlt />
             </a>
-            
+
             {coin.contractAddress && (
-              <a 
-                href={`https://basescan.org/address/${coin.contractAddress}`} 
+              <a
+                href={`https://basescan.org/address/${coin.contractAddress}`}
                 target="_blank"
                 className={`p-1 ${t.secondaryText} hover:text-blue-500`}
                 title="View Contract"

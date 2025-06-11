@@ -1,4 +1,4 @@
-import { getCoinsNew } from "@zoralabs/coins-sdk";
+import { getCoinsTopVolume24h } from "@zoralabs/coins-sdk";
 import { NextResponse } from 'next/server';
 import { ZoraCoinsResponse } from '../../../types/zora-coins';
 
@@ -8,19 +8,23 @@ export async function GET(request: Request) {
   const count = Number(searchParams.get('count')) || 12;
 
   try {
-    const response = await getCoinsNew({
+    const response = await getCoinsTopVolume24h({
       count,
       after: cursor
     });
 
-    const coins = response.data?.exploreList?.edges?.map(edge => ({
-      id: edge.node.id,
-      name: edge.node.name,
-      symbol: edge.node.symbol,
-    //   image: edge.node.image || '/default-coin.png',
-      minterAddress: edge.node.creatorAddress,
-      marketCap: edge.node.marketCap
-    })) || [];
+    const coins = response.data?.exploreList?.edges
+      ?.map(edge => edge.node)
+      ?.filter(node => node && node.name && node.symbol && node.creatorAddress)
+      ?.map(node => ({
+        id: node.id,
+        name: node.name,
+        symbol: node.symbol,
+        minterAddress: node.creatorAddress,
+        marketCap: node.marketCap,
+        // image: node.image || '/default.png'
+      })) || [];
+
 
     return NextResponse.json({
       coins,
