@@ -33,7 +33,7 @@ export default function RemixPreview({ base64 }: { base64: string; }) {
   const { data: walletClient } = useWalletClient();
   const { writeContract } = useWriteContract();
 
-  const saveMintToHistory = (coin: MintedCoin) => {
+  const saveCoinToHistory = (coin: MintedCoin) => {
     const history = JSON.parse(localStorage.getItem('mintHistory') || '[]');
     history.unshift(coin); // Add newest first
     localStorage.setItem('mintHistory', JSON.stringify(history));
@@ -121,7 +121,7 @@ export default function RemixPreview({ base64 }: { base64: string; }) {
           const txHash = result;
           setTxHash(txHash);
           // Store in history immediately 
-          saveMintToHistory({
+          saveCoinToHistory({
             name,
             symbol,
             image: base64, 
@@ -130,7 +130,7 @@ export default function RemixPreview({ base64 }: { base64: string; }) {
             timestamp: Date.now(),
           });
           SweetAlert.fire({
-            title: '🎉 Coin Minted!',
+            title: '🎉 Coin Deployed!',
             html: `
               <p>Your meme coin is live!</p>
               <p><strong>Tx Hash:</strong> <a href="https://basescan.org/tx/${txHash}" target="_blank">${txHash}</a></p>
@@ -149,8 +149,8 @@ export default function RemixPreview({ base64 }: { base64: string; }) {
       });
     } catch (err) {
       console.error(err);
-      setError('Something went wrong during minting.');
-      SweetAlert.fire('Error', 'Something went wrong during minting.', 'error');
+      setError('Failed to deploy coin.');
+      SweetAlert.fire('Error', 'Failed to deploy your coin.', 'error');
     } finally {
       setLoading(false);
     }
@@ -170,7 +170,7 @@ export default function RemixPreview({ base64 }: { base64: string; }) {
         className="mt-4 px-4 py-2 bg-green-500 text-white rounded disabled:opacity-50"
         disabled={loading || minted}
       >
-        {loading ? 'Minting Coin...' : minted ? 'Coin Minted ✅' : 'Mint as Meme Coin'}
+        {loading ? 'Deploying Coin...' : minted ? 'Coin Deployed ✅' : 'Deploy as Meme Coin'}
       </button>
 
       {ipfsUrl && (

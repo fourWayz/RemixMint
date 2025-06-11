@@ -10,12 +10,12 @@ export default function Home() {
           RemixMint 🎨 — Remix-to-Earn Memes
         </h1>
         <p className="text-gray-600 text-lg mb-6">
-          Turn any image into a viral, tradable meme NFT — powered by AI & Zora.
+          Turn any image into a viral, tradable meme coin — powered by AI & Zora.
         </p>
 
-         {/* 💼 Wallet Connect */}
-         <div className="mb-6">
-         <ConnectButton />
+        {/* 💼 Wallet Connect */}
+        <div className="mb-6">
+          <ConnectButton />
         </div>
         <div className="flex justify-center gap-4">
           <Link href="/upload">
@@ -48,19 +48,20 @@ export default function Home() {
             </p>
           </div>
           <div className="bg-white p-6 rounded-xl shadow">
-            <h3 className="font-bold mb-2">3. Mint & Share</h3>
+            <h3 className="font-bold mb-2">3. Deploy & Share</h3>
             <p className="text-gray-600 text-sm">
-              Mint your remix as an NFT via Zora. Earn, share, or trade it.
+              Deploy your remix as a meme coin via Zora. Earn, share, or trade it.
             </p>
+
           </div>
         </div>
       </section>
 
       {/* 🖼️ Gallery Preview */}
       <section className="mb-12">
-        <h2 className="text-2xl font-bold mb-4">🔥 Latest Minting</h2>
-        <p className="text-gray-600 mb-4">See what others are minting!</p>
-        <Link href="/recent-mints">
+        <h2 className="text-2xl font-bold mb-4">🔥 Latest Deployments</h2>
+        <p className="text-gray-600 mb-4">See what others are deploying!</p>
+        <Link href="/recent-coins">
           <button className="text-blue-600 underline">Explore Gallery →</button>
         </Link>
       </section>

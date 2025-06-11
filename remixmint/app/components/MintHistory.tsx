@@ -163,7 +163,7 @@ export function MintHistory() {
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
-            <h2 className={`text-2xl font-bold ${t.text}`}>Your Mint History</h2>
+            <h2 className={`text-2xl font-bold ${t.text}`}>Your Coin Deployment History</h2>
             <p className={`${t.secondaryText} mt-1`}>
               {history.length} {history.length === 1 ? 'item' : 'items'}
             </p>
@@ -216,7 +216,7 @@ export function MintHistory() {
                     onClick={() => { setFilterBy('all'); setFilterOpen(false); }}
                     className={`block w-full text-left px-4 py-2 ${t.hover}`}
                   >
-                    All Mints
+                    All Coins
                   </button>
                   <button 
                     onClick={() => { setFilterBy('withContract'); setFilterOpen(false); }}
@@ -238,8 +238,8 @@ export function MintHistory() {
 
         {history.length === 0 ? (
           <div className={`rounded-xl p-8 text-center ${t.card}`}>
-            <p className={`${t.secondaryText} text-lg`}>No mint history found</p>
-            <p className={`${t.secondaryText} mt-2`}>Your minted coins will appear here</p>
+            <p className={`${t.secondaryText} text-lg`}>"No coin deployments found</p>
+            <p className={`${t.secondaryText} mt-2`}>Your deployed coins will appear here</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -276,7 +276,7 @@ export function MintHistory() {
                         copyToClipboard(item.txHash);
                       }}
                       className={`p-1 ${t.secondaryText} hover:text-blue-500`}
-                      title="Copy TX Hash"
+                      title="Copy Transaction Hash"
                     >
                       <FaCopy />
                     </button>
