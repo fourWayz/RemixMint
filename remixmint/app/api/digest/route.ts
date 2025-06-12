@@ -16,12 +16,14 @@ export async function GET() {
             return `${i + 1}. ${coin.name} ($${coin.symbol}) — Volume: $${coin.volume24h}, Holders: ${coin.uniqueHolders}, Market Cap: $${coin.marketCap}`;
         }).join('\n');
 
-        const prompt = `
+
+    const prompt = `
 Here is a list of trending crypto coins and their 24h stats:
 
 ${input}
 
-Write a short 2-paragraph summary of key trends and interesting coins and return the summary only.
+Write a short 2-paragraph summary of key trends and interesting coins.
+Return ONLY the summary, without any introductory phrases like "Here is the summary" or "Based on the data".
 `;
         const response = await hf.chatCompletion({
             provider: "together",
