@@ -9,6 +9,7 @@ import { base, baseSepolia } from 'viem/chains'
 import { injected, walletConnect } from 'wagmi/connectors'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ThemeProvider } from "./components/ThemeProvider";
+import { PrivyProvider } from "@privy-io/react-auth";
 
 const queryClient = new QueryClient()
 
@@ -52,7 +53,14 @@ export default function RootLayout({
           <QueryClientProvider client={queryClient}>
             <RainbowKitProvider>
               <ThemeProvider>
-                {children}
+                <PrivyProvider
+                  appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID!}
+                  config={{
+                    appearance: { theme: "dark" }, // or "light" or auto
+                  }}
+                >
+                  {children}
+                </PrivyProvider>
               </ThemeProvider>
             </RainbowKitProvider>
           </QueryClientProvider>

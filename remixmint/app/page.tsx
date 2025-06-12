@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import ThemeToggle from './components/ThemeToggle';
+import PrivyLogin from './components/PrivyLogin';
 
 export default function Home() {
   const [digest, setDigest] = useState<string | null>(null);
@@ -26,13 +27,17 @@ export default function Home() {
   }, []);
 
   return (
-<main className="min-h-screen bg-white text-black dark:bg-gradient-to-br dark:from-black dark:via-zinc-900 dark:to-neutral-900 dark:text-white p-6 md:p-12 max-w-6xl mx-auto transition-colors duration-300">
+    <main className="min-h-screen bg-white text-black dark:bg-gradient-to-br dark:from-black dark:via-zinc-900 dark:to-neutral-900 dark:text-white p-6 md:p-12 max-w-6xl mx-auto transition-colors duration-300">
 
-      {/* 🎨 Connect + Theme Toggle */}
+      {/* 🎨 Connect + Theme Toggle + PrivyLogin */}
       <div className="flex justify-between items-center mb-8">
-        <ConnectButton />
+        <div className="flex gap-4 items-center">
+          <ConnectButton />
+          <PrivyLogin />
+        </div>
         <ThemeToggle />
       </div>
+
 
       {/* 🎨 Hero */}
       <section className="text-center mb-16">
