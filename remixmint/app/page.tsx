@@ -15,7 +15,10 @@ export default function Home() {
       try {
         const res = await fetch('/api/digest');
         const data = await res.json();
-        if (data) setDigest(data.summary.content);
+        if (data) {
+          const cleaned = data.summary.content.replace(/<think>[\s\S]*?<\/think>/, '').trim();
+          setDigest(cleaned);
+        }
       } catch (err) {
         console.error('Failed to load digest:', err);
       } finally {
